@@ -2,6 +2,8 @@
 
 A simple and flexible currency converter library that allows you to get the exchange rates between fiat and cryptocurrency from multiple sources. It provides a unified interface to get rates from different financial and cryptocurrency exchanges, with support for multiple data sources.
 
+**Note:** This project (more precisely the `getCurrencyRate()` function) uses web scraping to fetch fiat exchange rates, so it may stop working unexpectedly if the structure of the target websites changes.
+
 ## Features
 
 - **Get exchange rates for fiat currencies** using sources like:
@@ -43,7 +45,7 @@ Example:
 ```js
 const { getCurrencyRate } = require("currency-converter");
 
-async function convertFiat() {
+async function main() {
   try {
     const result = await getCurrencyRate("USD", "BRL");
     if (result.success) {
@@ -56,7 +58,7 @@ async function convertFiat() {
   }
 }
 
-convertFiat();
+main();
 ```
 
 ### 2. **Getting Cryptocurrency Rates**
@@ -68,7 +70,7 @@ Example:
 ```js
 const { getCryptoCurrencyRate } = require("currency-converter");
 
-async function convertCrypto() {
+async function main() {
   try {
     const result = await getCryptoCurrencyRate("BTC", "USDT");
     if (result.success) {
@@ -81,7 +83,7 @@ async function convertCrypto() {
   }
 }
 
-convertCrypto();
+main();
 ```
 
 ### 3. **Getting Both Fiat and Crypto Rates**
@@ -94,7 +96,7 @@ Example:
 ```js
 const { getRate } = require("currency-converter");
 
-async function getExchangeRate() {
+async function main() {
   const result1 = await getRate("BTC", "USDT");
   if (result1.success) {
     console.log(`Exchange rate (BTC to USDT): ${result1.rate} (Source: ${result1.source})`);
@@ -110,19 +112,30 @@ async function getExchangeRate() {
   }
 }
 
-getExchangeRate();
+main();
 ```
 
 ## Available Functions
+
+- `getCurrencyRate(base, quote)`:
+  - **base**: The base currency (e.g., "USD", "EUR").
+  - **quote**: The quote currency (e.g., "BRL", "GBP").
+  - **Returns**: A promise with an object containing the exchange rate or an error message.
+
+- `getCryptoCurrencyRate(base, quote)`:
+  - **base**: The base currency or cryptocurrency (e.g., "USD", "BTC").
+  - **quote**: The quote currency or cryptocurrency (e.g., "BRL", "USDT").
+  - **Returns**: A promise with an object containing the exchange rate or an error message.
 
 - `getRate(base, quote)`:
   - **base**: The base currency or cryptocurrency (e.g., "USD", "BTC").
   - **quote**: The quote currency or cryptocurrency (e.g., "BRL", "USDT").
   - **Returns**: A promise with an object containing the exchange rate or an error message.
 
+### Response format:
 ```js
 {
-  source: 'Google Finance'  // The source used to get the rate. (Eg.: 'Google Finance', 'Binance', etc...)
+  source: 'Google Finance'  // The source used to retrieve the exchange rate. (e.g., 'Google Finance', 'Binance', etc.)
   success: true,            // Whether the request was successful
   rate: 1.20,               // The exchange rate (if successful)
   error: undefined          // An error message (if unsuccessful)
