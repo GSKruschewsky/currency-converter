@@ -24,3 +24,6 @@ Thumbs.db
 
 # Optional: You may want to ignore test results or coverage files
 coverage/
+
+# ignore .npmignore
+.npmignore

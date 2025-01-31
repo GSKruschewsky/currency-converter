@@ -5,7 +5,9 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true,  // This will generate .d.ts files automatically
+    "declarationDir": "dist"  // Specifies where to output the generated declaration files
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
