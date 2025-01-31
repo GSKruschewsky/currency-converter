@@ -43,7 +43,7 @@ You can use the `getCurrencyRate` function to fetch the exchange rate between tw
 Example:
 
 ```js
-const { getCurrencyRate } = require("currency-converter");
+const { getCurrencyRate } = require("gsk-currency-converter");
 
 async function main() {
   try {
@@ -68,7 +68,7 @@ You can use the `getCryptoCurrencyRate` function to fetch the exchange rate of c
 Example:
 
 ```js
-const { getCryptoCurrencyRate } = require("currency-converter");
+const { getCryptoCurrencyRate } = require("gsk-currency-converter");
 
 async function main() {
   try {
@@ -94,7 +94,7 @@ The `getRate` function will attempt to get the rate for cryptocurrencies first a
 Example:
 
 ```js
-const { getRate } = require("currency-converter");
+const { getRate } = require("gsk-currency-converter");
 
 async function main() {
   const result1 = await getRate("BTC", "USDT");
