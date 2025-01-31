@@ -1,4 +1,4 @@
-const { getCryptoCurrencyRate } = require("../src");
+const { getCryptoCurrencyRate } = require("../dist");
 
 async function main() {
     const base = "BTC";

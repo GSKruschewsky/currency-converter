@@ -1,4 +1,4 @@
-const { getCurrencyRate } = require("../src");
+const { getCurrencyRate } = require("../dist");
 
 async function main() {
     const base = "USD";
