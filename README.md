@@ -23,7 +23,7 @@ A simple and flexible currency converter library that allows you to get the exch
 To install the package, run:
 
 ```bash
-npm install currency-converter
+npm install gsk-currency-converter
 ```
 
 Alternatively, you can clone this repository and install dependencies manually:
