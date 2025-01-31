@@ -1,0 +1,26 @@
+# Node modules directory (depends on your setup, but this is usually the case)
+node_modules/
+
+# Build output directory (dist/ will contain your transpiled files)
+dist/
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+
+# OS-specific files (e.g., macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# TypeScript specific files
+*.tsbuildinfo
+
+# IDE-specific files (for editors like VSCode)
+.vscode/
+.idea/
+
+# Environment variables files
+.env
+
+# Optional: You may want to ignore test results or coverage files
+coverage/
