@@ -37,6 +37,7 @@ export async function getCryptoCurrencyRate(base: string, quote: string): Promis
   return {
     source: 'All cryptos',
     success: false,
-    error: `Unable to retrieve exchange rate for ${base.toUpperCase()}/${quote.toUpperCase()} from any source.`
+    error: `Unable to retrieve exchange rate for ${base.toUpperCase()}/${quote.toUpperCase()} from any source.`,
+    results
   };
 }

@@ -32,5 +32,5 @@ export async function getCurrencyRate(base: string, quote: string): Promise<Exch
     }
   }
 
-  return { source: 'All fiats', success: false, error: `Exchange rate for ${base}/${quote} not found.` };
+  return { source: 'All fiats', success: false, error: `Exchange rate for ${base}/${quote} not found.`, results };
 }

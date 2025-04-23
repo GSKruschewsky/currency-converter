@@ -19,5 +19,5 @@ export async function getRate(base: string, quote: string): Promise<ExchangeRate
   if (fiatResult.success) return fiatResult;
 
   // If both fail, return a general error
-  return { source: 'All fiats and cryptos', success: false, error: `Exchange rate for ${base}/${quote} not found.` };
+  return { source: 'All fiats and cryptos', success: false, error: `Exchange rate for ${base}/${quote} not found.`, results: [ ...fiatResult.results, ...cryptoResult.results ] };
 }

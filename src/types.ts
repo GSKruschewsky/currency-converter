@@ -5,6 +5,7 @@ export interface ExchangeRateResult {
   source: string;
   rate?: number;
   error?: any;
+  results?: any;
 }
 
 /** Function that fetches the exchange rate from a provider. */
