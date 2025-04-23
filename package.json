@@ -1,6 +1,6 @@
 {
   "name": "gsk-currency-converter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A powerful, open-source currency converter API that supports both fiat and cryptocurrency exchange rates.",
   "main": "dist/index.js",
   "scripts": {
