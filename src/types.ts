@@ -1,4 +1,3 @@
-
 /** Provider response to an exchnage rate request. */
 export interface ExchangeRateResult {
   success: boolean;
