@@ -1,4 +1,5 @@
 import { ExchangeRateResult } from "../../types";
+import fetch from "node-fetch";
 
 /**
  * Fetches the exchange rate between base and quote from Coinbase's API.
