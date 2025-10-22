@@ -6,7 +6,7 @@ import fetch from "node-fetch";
  */
 export async function getWiseRate(base: string, quote: string): Promise<ExchangeRateResult> {
   try {
-    const http_r = await fetch(`https://wise.com/br/currency-converter/${base.toLowerCase()}-to-${quote.toLowerCase()}-rate`, {
+    const r = await fetch(`https://wise.com/br/currency-converter/${base.toLowerCase()}-to-${quote.toLowerCase()}-rate`, {
       headers: {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "accept-language": "pt-BR,pt;q=0.9,de-DE;q=0.8,de;q=0.7,en-US;q=0.6,en;q=0.5",
@@ -14,29 +14,30 @@ export async function getWiseRate(base: string, quote: string): Promise<Exchange
         "priority": "u=0, i"
       }
     });
-    const body = await http_r.text();
-    if (http_r.status !== 200) throw `HTTP ERROR (${http_r.status}): ${body}`;
+    if (!r.ok) {
+      throw `HTTP ERROR: (${r.status}) ${r.statusText}`;
+    }
 
-    let r = body;
-    let values = [];
+    let data = await r.text();
     let idx = undefined;
+    const values = [];
 
-    idx = r.indexOf('estiver maior que');
+    idx = data.indexOf('estiver maior que');
     if (idx !== -1) {
-      r = r.substring(idx + 18);
-      idx = r.indexOf('<');
+      data = data.substring(idx + 18);
+      idx = data.indexOf('<');
       if (idx !== -1) {
-        const value:string = r.substring(0, idx - 1);
+        const value:string = data.substring(0, idx - 1);
         values.push(parseFloat(value));
       }
     }
 
-    idx = r.indexOf('<script id="__NEXT_DATA__" type="application/json">');
+    idx = data.indexOf('<script id="__NEXT_DATA__" type="application/json">');
     if (idx !== -1) {
-      r = r.substring(idx + 51);
-      idx = r.indexOf('</script>');
+      data = data.substring(idx + 51);
+      idx = data.indexOf('</script>');
       if (idx !== -1) {
-        let obj: any = r.substring(0, idx);
+        let obj: any = data.substring(0, idx);
         try {
           obj = JSON.parse(obj);
   
@@ -54,9 +55,13 @@ export async function getWiseRate(base: string, quote: string): Promise<Exchange
         }
       }
     }
-
-    if (values.length)
-      return { source: 'Wise', success: true, rate: (values.length === 3 ? values[2] : values[0]) };
+  
+    if (values.length) {
+      const finalRate = parseFloat(values[0]);
+      if (!isNaN(finalRate)) {
+        return { source: 'Wise', success: true, rate: finalRate };
+      }
+    }
 
     throw "Could not scrape the rate.";
 

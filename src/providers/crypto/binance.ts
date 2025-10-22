@@ -27,7 +27,11 @@ export async function getBinanceRate(base: string, quote: string): Promise<Excha
     if (!r.lastPrice)
       throw `API ERROR (UNEXPECTED RESPONSE):\n${JSON.stringify(r)}`;
 
-    return { source: 'Binance', success: true, rate: parseFloat(r.lastPrice) };
+    const finalRate = parseFloat(r.lastPrice);
+    if (isNaN(finalRate))
+      throw `API ERROR ('lastPrice' is not a valid number):\n${JSON.stringify(r)}`;
+
+    return { source: 'Binance', success: true, rate: finalRate };
 
   } catch (error: any) {
     return { source: 'Binance', success: false, error };

@@ -22,7 +22,11 @@ export async function getBybitRate(base: string, quote: string): Promise<Exchang
     const price = r?.result.list[0].lastPrice;
     if (!price) throw `API ERROR (UNEXPECTED RESPONSE):\n${JSON.stringify(r)}`;
 
-    return { source: 'Bybit', success: true, rate: price * 1 };
+    const finalRate = parseFloat(price);
+    if (isNaN(finalRate))
+      throw `API ERROR ('lastPrice' is not a valid number):\n${JSON.stringify(r)}`;
+
+    return { source: 'Bybit', success: true, rate: finalRate };
     
   } catch (error: any) {
     return { source: 'Bybit', success: false, error };

@@ -26,7 +26,11 @@ export async function getKrakenRate(base: string, quote: string): Promise<Exchan
       const price = r.result[Object.keys(r.result)[0]].c[0];
       if (!price) throw 'not expected response format';
 
-      return { source: 'Kraken', success: true, rate: price * 1 }
+      const finalRate = parseFloat(price);
+      if (isNaN(finalRate))
+        throw `'price' is not a valid number`;
+
+      return { source: 'Kraken', success: true, rate: finalRate };
 
     } catch (error) {
       throw `API ERROR (UNEXPECTED RESPONSE):\n${JSON.stringify(r)}`;

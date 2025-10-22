@@ -29,7 +29,11 @@ export async function getCoinbaseRate(base: string, quote: string): Promise<Exch
     if (!r.price)
       throw `API ERROR (UNEXPECTED RESPONSE):\n${JSON.stringify(r)}`;
 
-    return { source: 'Coinbase', success: true, rate: r.price * 1 }
+    const finalRate = parseFloat(r.price);
+    if (isNaN(finalRate))
+      throw `API ERROR ('price' is not a valid number):\n${JSON.stringify(r)}`;
+
+    return { source: 'Coinbase', success: true, rate: finalRate };
     
   } catch (error: any) {
     return { source: 'Coinbase', success: false, error };

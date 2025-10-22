@@ -25,7 +25,10 @@ export async function getCurrencyRate(base: string, quote: string): Promise<Exch
   for (const result of results) {
     
     // Return the first valid result
-    if (result.success && result.rate !== undefined) {
+    if (
+      result.success && 
+      (!isNaN(Number(result.rate)))
+    ) {
       return result;
 
       // console.warn(`Failed to get rate from ${result.source}:`, result.error);

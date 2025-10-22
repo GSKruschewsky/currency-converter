@@ -6,7 +6,7 @@ import fetch from "node-fetch";
  */
 export async function getInvestingComRate(base: string, quote: string): Promise<ExchangeRateResult> {
   try {
-    const http_r = await fetch(`https://br.investing.com/currencies/${base.toLowerCase()}-${quote.toLowerCase()}`, {
+    const r = await fetch(`https://br.investing.com/currencies/${base.toLowerCase()}-${quote.toLowerCase()}`, {
       headers: {
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "accept-language": "pt-BR,pt;q=0.9,de-DE;q=0.8,de;q=0.7,en-US;q=0.6,en;q=0.5",
@@ -14,21 +14,22 @@ export async function getInvestingComRate(base: string, quote: string): Promise<
         "priority": "u=0, i"
       }
     });
-    const body = await http_r.text();
-    if (http_r.status !== 200) throw `HTTP ERROR (${http_r.status}): ${body}`;
-  
-    let r = body;
-    let values = [];
+    if (!r.ok) {
+      throw `HTTP ERROR: (${r.status}) ${r.statusText}`;
+    }
+
+    let data = await r.text();
     let idx = undefined;
+    const values = [];
   
-    idx = r.indexOf('<script id="__NEXT_DATA__" type="application/json">');
+    idx = data.indexOf('<script id="__NEXT_DATA__" type="application/json">');
     if (idx !== -1) {
-      r = r.substring(idx + 51);
-      idx = r.indexOf('</script>');
+      data = data.substring(idx + 51);
+      idx = data.indexOf('</script>');
       if (idx !== -1) {
-        r = r.substring(0, idx);
+        data = data.substring(0, idx);
         try {
-          const obj = JSON.parse(r);
+          const obj = JSON.parse(data);
           
           const value = obj?.props.pageProps.state.currencyStore.instrument.price.last;
           if (value) values.push(value);
@@ -45,8 +46,12 @@ export async function getInvestingComRate(base: string, quote: string): Promise<
       }
     }
   
-    if (values.length)
-      return { source: 'Investing.com', success: true, rate: values[0] };
+    if (values.length) {
+      const finalRate = parseFloat(values[0]);
+      if (!isNaN(finalRate)) {
+        return { source: 'Investing.com', success: true, rate: finalRate };
+      }
+    }
   
     throw "Could not scrape the rate.";
 
